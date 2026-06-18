@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vote Centers Research | Manion, Kimball &amp; Shaw</title>
+  <style>
+    :root {
+      --navy:   #1a3a5c;
+      --blue:   #2c6fad;
+      --sky:    #e8f2fb;
+      --accent: #c8392b;
+      --gray:   #5a6272;
+      --light:  #f5f6f8;
+      --border: #d4dce8;
+      --text:   #1e2531;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      color: var(--text);
+      background: #fff;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 56px;
+    }
+    nav .brand {
+      color: #fff;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      font-family: "Arial", sans-serif;
+      font-weight: 600;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul a {
+      color: #c5d6ea;
+      text-decoration: none;
+      font-family: "Arial", sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: #fff; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #24547e 60%, #2c6fad 100%);
+      color: #fff;
+      padding: 72px 40px 64px;
+      text-align: center;
+    }
+    .hero .label {
+      font-family: "Arial", sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9fc8e8;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: normal;
+      line-height: 1.2;
+      max-width: 760px;
+      margin: 0 auto 20px;
+    }
+    .hero .subtitle {
+      font-family: "Arial", sans-serif;
+      font-size: 1rem;
+      color: #c5d6ea;
+      max-width: 600px;
+      margin: 0 auto 36px;
+    }
+    .hero .authors {
+      font-family: "Arial", sans-serif;
+      font-size: 0.95rem;
+      color: #e0ecf7;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero .authors span {
+      display: inline-block;
+      line-height: 1.4;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section { padding: 64px 40px; }
+    .section.alt { background: var(--light); }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: "Arial", sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+    .section h2 {
+      font-size: 1.75rem;
+      font-weight: normal;
+      color: var(--navy);
+      margin-bottom: 32px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    /* ── MAP ── */
+    .map-section { background: var(--sky); padding: 64px 40px; }
+    .map-section .container { text-align: center; }
+    .map-section h2 {
+      font-size: 1.75rem;
+      font-weight: normal;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .map-section .map-desc {
+      font-family: "Arial", sans-serif;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 36px;
+    }
+    .map-embed {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(26,58,92,0.10);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .map-embed iframe {
+      width: 100%;
+      height: 520px;
+      border: none;
+      display: block;
+    }
+    .map-fallback {
+      padding: 60px 40px;
+      background: #f0f6fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .map-fallback .icon {
+      font-size: 3rem;
+      color: var(--blue);
+    }
+    .map-fallback p {
+      font-family: "Arial", sans-serif;
+      color: var(--gray);
+      font-size: 0.9rem;
+      max-width: 440px;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .btn-map {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      text-decoration: none;
+      font-family: "Arial", sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+      transition: background 0.2s;
+    }
+    .btn-map:hover { background: var(--navy); }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--blue);
+      border-radius: 4px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 2.6rem;
+      font-weight: bold;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-card .label {
+      font-family: "Arial", sans-serif;
+      font-size: 0.82rem;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+
+    /* ── FINDINGS ── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    @media (max-width: 700px) { .findings-grid { grid-template-columns: 1fr; } }
+
+    .finding-card {
+      border-left: 4px solid var(--blue);
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .finding-card h3 {
+      font-size: 1.05rem;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .finding-card p {
+      font-family: "Arial", sans-serif;
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* ── REDUCTION BARS ── */
+    .reduction-list { display: flex; flex-direction: column; gap: 20px; }
+    .reduction-item { }
+    .reduction-item .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    .reduction-item .meta .name {
+      font-family: "Arial", sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .reduction-item .meta .pct {
+      font-family: "Arial", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .bar-track {
+      background: var(--border);
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 5px;
+      transition: width 1s ease;
+    }
+
+    /* ── SUPPORT ── */
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .support-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .support-card .group {
+      font-family: "Arial", sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 12px;
+    }
+    .support-card .pct {
+      font-size: 2.4rem;
+      font-weight: bold;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .support-card .context {
+      font-family: "Arial", sans-serif;
+      font-size: 0.8rem;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+    .support-card .pct span {
+      font-size: 1.2rem;
+      font-weight: normal;
+    }
+
+    /* ── DATABASE CTA ── */
+    .db-section {
+      background: var(--navy);
+      color: #fff;
+      padding: 64px 40px;
+      text-align: center;
+    }
+    .db-section .label {
+      font-family: "Arial", sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9fc8e8;
+      margin-bottom: 16px;
+    }
+    .db-section h2 {
+      font-size: 1.9rem;
+      font-weight: normal;
+      margin-bottom: 16px;
+    }
+    .db-section p {
+      font-family: "Arial", sans-serif;
+      color: #c5d6ea;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: #fff;
+      color: var(--navy);
+      text-decoration: none;
+      font-family: "Arial", sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 14px 32px;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-primary:hover { background: var(--sky); }
+    .btn-outline {
+      display: inline-block;
+      border: 1px solid #7bafd4;
+      color: #c5d6ea;
+      text-decoration: none;
+      font-family: "Arial", sans-serif;
+      font-size: 0.85rem;
+      padding: 12px 28px;
+      border-radius: 4px;
+      margin-left: 16px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: #fff; color: #fff; }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+    .bio-card {
+      text-align: center;
+      padding: 32px 24px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #fff;
+    }
+    .bio-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-family: "Arial", sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .bio-card h3 {
+      font-size: 1.05rem;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .bio-card .title {
+      font-family: "Arial", sans-serif;
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0e2236;
+      color: #7bafd4;
+      text-align: center;
+      padding: 32px 40px;
+      font-family: "Arial", sans-serif;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+    footer a { color: #9fc8e8; text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      nav ul { gap: 16px; }
+      .section, .map-section, .db-section { padding: 48px 20px; }
+      .hero { padding: 52px 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">Vote Centers Research</div>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#map">Map</a></li>
+    <li><a href="#findings">Findings</a></li>
+    <li><a href="#database">Database</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <h1>Understanding Vote Centers:<br>Adoption, Administration, and Voter Experience</h1>
+  <p class="subtitle">
+    A multi-year study of Election Day vote center implementation across the United States,
+    examining administrative impacts, voter experiences, and stakeholder support.
+  </p>
+  <div class="authors">
+    <span>Anita Manion, PhD<br><small style="font-size:0.78rem;color:#9fc8e8;">University of Missouri-St. Louis</small></span>
+    <span>David Kimball, PhD<br><small style="font-size:0.78rem;color:#9fc8e8;">University of Missouri-St. Louis</small></span>
+    <span>Jake Shaw, PhD<br><small style="font-size:0.78rem;color:#9fc8e8;">DePauw University</small></span>
+  </div>
+</header>
+
+<!-- OVERVIEW STATS -->
+<section class="section" id="overview">
+  <div class="container">
+    <div class="section-label">National Scope</div>
+    <h2>Vote Centers at a Glance</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="number">625</div>
+        <div class="label">Local jurisdictions<br>using vote centers</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">19</div>
+        <div class="label">States with<br>vote center jurisdictions</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">~30%</div>
+        <div class="label">Of U.S. registered voters<br>served by vote centers</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">2020</div>
+        <div class="label">Inflection point — adoption<br>accelerated sharply after</div>
+      </div>
+    </div>
+
+    <p style="margin-top:28px; font-family:'Arial',sans-serif; font-size:0.88rem; color:var(--gray); max-width:720px; line-height:1.7;">
+      Vote centers allow any registered voter within a jurisdiction to cast a ballot at any
+      polling location on Election Day, rather than being assigned to a specific precinct.
+      This model requires real-time voter check-in systems and has seen rapid adoption across
+      the Midwest and Plains regions in particular.
+    </p>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section" id="map">
+  <div class="container">
+    <div class="section-label" style="color:var(--navy);">Geographic Distribution</div>
+    <h2>Vote Centers Across the United States</h2>
+    <p class="map-desc">
+      625 jurisdictions in 19 states — with geographic concentration in the Midwest and Plains regions.
+      View the full interactive presentation for detailed state-by-state breakdowns.
+    </p>
+    <div class="map-embed" style="margin-bottom:24px;">
+      <img
+        src="vote-center-map.png"
+        alt="Map of jurisdictions with Election Day Vote Centers in 2025"
+        style="width:100%; display:block; border-radius:4px 4px 0 0;"
+      />
+    </div>
+
+    <h3 style="font-size:1.2rem; font-weight:normal; color:var(--navy); margin-bottom:16px;">Additional Research Findings</h3>
+    <div class="map-embed">
+      <iframe
+        src="https://docs.google.com/presentation/d/1vJHuyLor2N978Sj4R7c1TxEvkSQJFonC/embed?start=false&loop=false&delayms=60000"
+        frameborder="0"
+        allowfullscreen="true"
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section class="section alt" id="findings">
+  <div class="container">
+    <div class="section-label">Research Findings</div>
+    <h2>Key Results</h2>
+
+    <div class="findings-grid" style="margin-bottom:48px;">
+      <div class="finding-card">
+        <h3>Administrative Efficiency</h3>
+        <p>
+          Vote centers dramatically reduce the operational footprint of election administration.
+          Jurisdictions report roughly half as many physical polling locations to staff and
+          maintain, and corresponding reductions in poll worker recruitment needs.
+        </p>
+      </div>
+      <div class="finding-card">
+        <h3>Provisional Ballot Reduction</h3>
+        <p>
+          Because vote centers eliminate "wrong precinct" errors, jurisdictions see sharp
+          reductions in both the number of provisional ballots cast and the share of
+          provisionals that are ultimately rejected.
+        </p>
+      </div>
+      <div class="finding-card">
+        <h3>Voter Location Experience</h3>
+        <p>
+          Survey data from 2024 show that vote center users reported somewhat less ease
+          locating their polling place compared to precinct voters — an important equity
+          and communication consideration for implementing jurisdictions.
+        </p>
+      </div>
+      <div class="finding-card">
+        <h3>Implementation Quality Matters</h3>
+        <p>
+          The research finds that vote centers prove most effective in larger jurisdictions
+          and when paired with robust voter communication. Access and equity require ongoing
+          attention, particularly for voters with limited transportation or information access.
+        </p>
+      </div>
+    </div>
+
+    <!-- Reduction bars -->
+    <div class="section-label">Administrative Impact</div>
+    <h2 style="margin-bottom:24px;">Reductions Reported by Jurisdictions</h2>
+    <div class="reduction-list" style="max-width:600px;">
+      <div class="reduction-item">
+        <div class="meta">
+          <span class="name">Polling Locations</span>
+          <span class="pct">~50% reduction</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+      </div>
+      <div class="reduction-item">
+        <div class="meta">
+          <span class="name">Poll Workers Required</span>
+          <span class="pct">~30% reduction</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:30%"></div></div>
+      </div>
+      <div class="reduction-item">
+        <div class="meta">
+          <span class="name">Provisional Ballots Cast</span>
+          <span class="pct">~50% reduction</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+      </div>
+      <div class="reduction-item">
+        <div class="meta">
+          <span class="name">Rejected Provisional Ballots</span>
+          <span class="pct">~40% reduction</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAKEHOLDER SUPPORT -->
+<section class="section" id="support">
+  <div class="container">
+    <div class="section-label">Stakeholder Perspectives</div>
+    <h2>Support for Vote Centers</h2>
+    <p style="font-family:'Arial',sans-serif; font-size:0.9rem; color:var(--gray); margin-bottom:32px; max-width:640px; line-height:1.65;">
+      Case studies from St. Louis County, Missouri and Fresno County, California reveal strong
+      support from both voters and election workers.
+    </p>
+    <div class="support-grid">
+      <div class="support-card">
+        <div class="group">Voters</div>
+        <div class="pct">72<span>%</span></div>
+        <div class="context">favor vote centers<br>(St. Louis &amp; Fresno Counties)</div>
+      </div>
+      <div class="support-card">
+        <div class="group">Poll Workers</div>
+        <div class="pct">82–97<span>%</span></div>
+        <div class="context">prefer working vote centers<br>over traditional precincts</div>
+      </div>
+      <div class="support-card">
+        <div class="group">Election Officials</div>
+        <div class="pct">Strong</div>
+        <div class="context">support reported across<br>implementing jurisdictions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATABASE CTA -->
+<section class="db-section" id="database">
+  <div class="label">Research Data</div>
+  <h2>Jurisdiction Database</h2>
+  <p>
+    Our database catalogs all known jurisdictions in the United States that have adopted
+    Election Day vote centers, including state, county, adoption year, and implementation
+    details.  </p>
+  <a class="btn-primary"
+     href="https://docs.google.com/spreadsheets/d/14oTNyDN0gz3pECl_5k3vP-sEiI9Gfmoe/edit?gid=625579420#gid=625579420"
+     target="_blank" rel="noopener">
+    Access the Database
+  </a>
+</section>
+
+<!-- TEAM -->
+<section class="section alt" id="team">
+  <div class="container">
+    <div class="section-label">The Research Team</div>
+    <h2>About the Authors</h2>
+    <div class="about-grid">
+      <div class="bio-card">
+        <div class="bio-avatar">AM</div>
+        <h3>Anita Manion, PhD</h3>
+        <div class="title">University of Missouri-St. Louis</div>
+      </div>
+      <div class="bio-card">
+        <div class="bio-avatar">DK</div>
+        <h3>David Kimball, PhD</h3>
+        <div class="title">University of Missouri-St. Louis</div>
+      </div>
+      <div class="bio-card">
+        <div class="bio-avatar">JS</div>
+        <h3>Jake Shaw, PhD</h3>
+        <div class="title">DePauw University</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong style="color:#c5d6ea;">Vote Centers Research</strong><br>
+    Manion · Kimball · Shaw
+  </p>
+  <p style="margin-top:10px;">
+    Questions or data requests? Contact the research team.<br>
+    <a href="https://docs.google.com/spreadsheets/d/14oTNyDN0gz3pECl_5k3vP-sEiI9Gfmoe/edit?gid=625579420#gid=625579420" target="_blank" rel="noopener">Jurisdiction Database</a>
+    &nbsp;·&nbsp;
+    <a href="https://docs.google.com/presentation/d/1vJHuyLor2N978Sj4R7c1TxEvkSQJFonC/edit?usp=sharing" target="_blank" rel="noopener">Research Presentation</a>
+  </p>
+</footer>
+
+</body>
+</html>
